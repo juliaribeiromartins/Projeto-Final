@@ -43,44 +43,47 @@ class Player(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect=self.image.get_rect() #rect é retangulo
         self.rect.y = random.randrange(0,HEIGHT)
-        self.rect.x = random.randrange(0,2)
+        self.rect.x = random.randrange(0,8)
         self.speedx =random.randrange(2,15)
-        self.speedy =random.randrange(0,1)
+        self.speedy =random.randrange(1,2)
         
     def update(self):
-       self.rect.y+= self.speedy
-       self.rect.x+= self.speedx
-       if self.rect.top > HEIGHT + 10 or self.rect.left < -50 or self.rect.right > WIDTH + 50:
-           self.rect.y = random.randrange(0,HEIGHT)
-           self.rect.x = random.randrange(0,2)
-           
-           velocidade_min_x=-5
-           velocidade_max_x=5
-           velocidade_max_x=velocidade_max_x - velocidade_max_x*self.rect.x/WIDTH
-           velocidade_min_x=velocidade_min_x - velocidade_min_x*(1 - self.rect.x/WIDTH)
-           
-           self.speedx =random.uniform(velocidade_min_x, velocidade_max_x )
-           self.speedy =random.randrange(0,1)
-           
+
+
+       
+        if(self.rect.x - 16 > WIDTH/2):
+           self.rect.x -= self.speedx
+        
+        elif(self.rect.x + 16 < WIDTH/2):
+           self.rect.x += self.speedx
+       
+        if(self.rect.y - 16 > HEIGHT/2):
+           self.rect.y -= self.speedy
+        
+        elif(self.rect.y + 16 < HEIGHT/2):
+           self.rect.y += self.speedy
+
        
 
 
 p=pygame.sprite.Group()      
-
-for i in range(0,8):
-    player= Player()
-    all_sprites.add(player)
-    p.add(player)     
-
 
 
 
 
 #game loop
 running=True 
+count=0
 while running:
     clock.tick(FPS)
     
+    if count==6:
+        player= Player()
+        all_sprites.add(player)
+        p.add(player)
+        count=0
+    
+        
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running=False
@@ -88,29 +91,11 @@ while running:
     screen.fill(AZUL) #cor da tela
     all_sprites.draw(screen) #to chamando a função para o grupo inteiro ser desenhado
     pygame.display.flip()#atualizar depois que vc "desenha"
-    #a partir de agora todos os grupos serao desenhados na tela e atualizados
+    count+=1
 pygame.quit()
 quit()
     
 
-          
-         #self.speedx =random.uniform(velocidade_min_x, velocidade_max_x )
-         #self.speedy =random.randrange(5,9)  
-         
-   # if self.rect.top > HEIGHT + 10 or self.rect.left < -50 or self.rect.right > WIDTH + 50:
-           
-           #self.rect.y = random.randrange(0,HEIGHT)
-           #self.rect.x = random.randrange(0,2)
-           
-           #velocidade_min_x=-5
-           #velocidade_max_x=5
-           #velocidade_max_x=velocidade_max_x - velocidade_max_x*self.rect.x/WIDTH
-           #velocidade_min_x=velocidade_min_x - velocidade_min_x*(1 - self.rect.x/WIDTH)
-           
-           #self.speedx =random.uniform(velocidade_min_x, velocidade_max_x )
-           #self.speedy =random.randrange(5,9)
-           
+        
     
     
-    
-#if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
